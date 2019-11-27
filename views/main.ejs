@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>TheMixLink</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap-material-design@4.1.1/dist/css/bootstrap-material-design.min.css" integrity="sha384-wXznGJNEXNG1NFsbm0ugrLFMQPWswR3lds2VeinahP8N0zJw9VWSopbjv2x7WCvX" crossorigin="anonymous">
+
+    <style>
+        body {
+            padding-top: 3.5rem;
+        }
+    </style>
+
+    <script>
+        function short()
+        {
+            fetch(`/api?url=${document.querySelector('#linkInput').value}`).then(response => {
+                response.json().then(responseJson => {
+                    if (responseJson.error == null)
+                    {
+                      document.querySelector('#shortenLinkInput').value = responseJson.link;
+                      $('#shortenModal').modal('show');
+                    }
+                    else
+                    {
+                      switch (responseJson.error)
+                      {
+                        case ('url not specified'):
+                          showError('URL не указан!')
+                          break;
+                        case ('no protocol'):
+                          showError('Протокол не указан! Поддерживаемые протоколы: http, https, ftp, ftps.')
+                          break;
+                        default:
+                          showError(`Ошибка сокращения. Ответ API: ${JSON.stringify(responseJson)}`)
+                          break;
+                      }
+                    }
+                });
+            });
+        }
+
+        function showError(errorText)
+        {
+          document.querySelector('#errorModalBody').innerHTML = errorText;
+          $('#errorModal').modal('show');
+        }
+
+        function copyLink()
+        {
+            navigator.clipboard.writeText(document.querySelector('#shortenLinkInput').value).catch(err => {
+                alert('Не удалось скопировать ссылку... ' + e)
+            });
+        }
+    </script>
+    </head>
+
+    <body>
+
+    <div class="modal fade" id="shortenModal" tabindex="-1" role="dialog" aria-labelledby="shortenModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shortenModalLabel">Сокращенная ссылка</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body input-group">
+                    <input id="shortenLinkInput" type="text" class="form-control" readonly>
+                    <button class="input-group-btn btn btn-default go inline" onClick="copyLink()" data-toggle="tooltip" data-placement="top">Скопировать</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="errorModalLabel">Ошибка сокращения ссылки</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body" id="errorModalBody"></div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">OK</button>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+      <a class="navbar-brand" href="/">TheMixLink</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Главная <span class="sr-only">(текущая)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/api/docs">API</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">Об сократителе</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main role="main">
+
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-3">Сократите ссылку</h1>
+          <p><label for="linkInput" class="bmd-label-floating">Ссылка (с протоколом)</label>
+            <input type="text" class="form-control" id="linkInput"></p>
+          <p><button class="btn btn-primary btn-lg" onClick="short()" role="button">Сократить</button></p>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-4">
+            <h2>API</h2>
+            <p>У TheMixLink есть удобный API, благодаря которому Вы сможете сокращать ссылки в своих проектах.</p>
+            <p><a class="btn btn-secondary" href="/api/docs" role="button">Документация &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>Open Source</h2>
+            <p>Исходный код TheMixLink открыт, поэтому Вы можете посмотреть как работает TheMixLink. Ну и Вы можете сделать форк TheMixLink.</p>
+            <p><a class="btn btn-secondary" href="https://github.com/themixteam/themixlink" role="button">GitHub &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>Разработчики сократителя</h2>
+            <p>TheMixLink разрабатывали<ul>
+                <li>maks12345</li>
+                <li>Hackyank</li>
+            </ul></p>
+            <p><a class="btn btn-secondary" href="/about" role="button">Об сократителе &raquo;</a></p>
+          </div>
+        </div>
+
+        <hr>
+
+      </div>
+
+    </main>
+
+    <footer class="container">
+      <p>&copy; TheMixTeam Foundation 2019</p>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
+    <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+  </body>
+</html>
