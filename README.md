@@ -1,4 +1,5 @@
 # TheMixLink
+![TheMixLink Logo](https://raw.githubusercontent.com/themixteam/TheMixLink/master/github_images/logo_small.png "Просто тут для красоты")  
 Простой сократитель ссылок. https://l.themixteam.ru
 
 # Предупреждение
