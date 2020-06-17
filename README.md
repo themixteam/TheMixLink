@@ -1,9 +1,6 @@
 # TheMixLink
 ![TheMixLink Logo](https://raw.githubusercontent.com/themixteam/TheMixLink/master/github_images/logo_small.png "Просто тут для красоты")  
-Простой сократитель ссылок. https://l.themixteam.ru
-
-# Предупреждение
-В даннный момент сайт https://l.themixteam.ru не работает. Чтобы использовать TheMixLink Вам необходимо разместить его у себя на сервере. Скоро сайт https://l.themixteam.ru будет работать.
+Простой сократитель ссылок. https://l.justartur.ru
 
 # Зависимости
 - `body-parser ^1.19.0`
