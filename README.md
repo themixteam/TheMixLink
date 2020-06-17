@@ -3,7 +3,6 @@
 Простой сократитель ссылок. https://l.justartur.ru
 
 # Зависимости
-- `body-parser ^1.19.0`
 - `ejs ^2.6.2`
 - `express ^4.17.1`
 - `mongodb ^3.3.0-beta2`
