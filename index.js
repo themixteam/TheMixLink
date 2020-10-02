@@ -91,16 +91,22 @@ function short(url, host)
         const link = `https://${host}/${code}`;
         const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true, useUnifiedTopology: true });
         mongoClient.connect(function(error, client) {
+            if (error)
+            {
+                reject(error);
+            }
+            
             const db = client.db(config.database);
             const collection = db.collection("links");
-            let linkObject = ({
+            const linkObject = ({
                 "code": code,
                 "url": url
             });
+            
             collection.insertOne(linkObject, function(error, result) {
                 if (error)
                 { 
-                    return console.log(error);
+                    reject(error);
                 }
                 client.close();
                 resolve(link);
