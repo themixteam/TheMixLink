@@ -50,7 +50,7 @@ app.get('/about', function (req, res) {
 
 app.get('/:code', function (req, res) {
     const code = req.params.code;
-    const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
+    const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true, useUnifiedTopology: true });
     mongoClient.connect(function(err, client){
         const db = client.db(config.database);
         const collection = db.collection("links");
@@ -89,7 +89,7 @@ function short(url, host)
     return new Promise(function(resolve, reject) {
         const code = makeCode(5);
         const link = `https://${host}/${code}`;
-        const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true });
+        const mongoClient = new MongoClient("mongodb://localhost:27017/", { useNewUrlParser: true, useUnifiedTopology: true });
         mongoClient.connect(function(error, client) {
             const db = client.db(config.database);
             const collection = db.collection("links");
